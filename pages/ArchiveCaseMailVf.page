@@ -1,0 +1,9 @@
+<apex:page standardController="case" extensions="emailArchive" >
+ <apex:form >
+ <apex:pageBlock >
+ Are you ready to archive :
+ <apex:commandButton value="Yes" action="{!Archive}"/>
+ <apex:commandButton value="no" action="{!exitpg}"/>
+ </apex:pageBlock>
+</apex:form> 
+</apex:page>
