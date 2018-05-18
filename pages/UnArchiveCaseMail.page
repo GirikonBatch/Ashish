@@ -1,0 +1,11 @@
+<apex:page standardController="case" extensions="emailRecoveryCase"  lightningStylesheets="true">
+ <apex:form >
+ <apex:pageBlock >
+ Are you Sure to UnArchive all the Emails :
+ <apex:commandButton value="Yes" action="{!Recover}" />
+ <apex:commandButton value="no" action="{!exitpg}" />
+ 
+
+ </apex:pageBlock>
+</apex:form> 
+</apex:page>
