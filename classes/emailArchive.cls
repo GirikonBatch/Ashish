@@ -17,77 +17,81 @@ public class emailArchive {
         }
          
     
-    public PageReference  Archive(){
+  public PageReference  Archive(){
       
-       
+      for( EmailMessage caseMial : mail_case){
+         email_list.add(caseMial.Id);
+      }
         
-        for( EmailMessage caseMial : mail_case){
-        email_list.add(caseMial.Id);
-        }
-        
-          	  for(attachment attm : [select Body,BodyLength,ContentType,CreatedById,CreatedDate,Description,Id,
-                                    		 IsDeleted,IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,
-                                     			ParentId,SystemModstamp from attachment where parentid in : email_list]){
+      for(attachment attm : [select Body,BodyLength,ContentType,CreatedById,CreatedDate,Description,Id,
+                                    IsDeleted,IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,
+                                    ParentId,SystemModstamp from attachment where parentid in : email_list]){
                     
-                    attachment atch = new attachment();
-                    atch.Body = attm.Body;
-                    atch.ContentType = attm.ContentType;
-                    atch.Description = attm.Description;
-                    atch.IsPrivate =  attm.IsPrivate;
-                    atch.Name  =  attm.ParentId+'__Attachment_'+ attm.Name;
-                    atch.OwnerId = attm.OwnerId;
-                    atch.ParentId =   case_id;
-                    atmList.add(atch);
+                attachment atch = new attachment();
+                atch.Body = attm.Body;
+                atch.ContentType = attm.ContentType;
+                atch.Description = attm.Description;
+                atch.IsPrivate =  attm.IsPrivate;
+                atch.Name  =  attm.ParentId+'__Attachment_'+ attm.Name;
+                atch.OwnerId = attm.OwnerId;
+                atch.ParentId =   case_id;
+                  atmList.add(atch);
                     
-              }   
-       insert atmList;
+        }   
+    insert atmList;
         
-          
-   
       atmList.clear();
        
-        for( EmailMessage caseMial : mail_case )
-            {
-             attach_ids = '';   
-             for(attachment a :[select id,name from attachment where name like : caseMial.Id+'__Attachment_%'] ){
-           attach_ids = attach_ids+'#;#'+a.Id ;
-            }   
-        
-          attachment atch = new attachment();
+    for( EmailMessage caseMial : mail_case ){
             
-            atch.ParentId =  case_id;
-            atch.Name = caseMial.Id+'_'+'_Email.pdf';
-            atch.Body = blob.toPDF(caseMial.FromName+'<br/>'+caseMial.FromAddress+'<br/>'+caseMial.CcAddress +'<br/>' +caseMial.CcAddress+'<br/>'+caseMial.Subject+'<br/>' +caseMial.TextBody +'<br/>'  );
-             atmList.add(atch);  
+      attach_ids = '';  
+
+      for(attachment a :[select id,name from attachment where name like : caseMial.Id+'__Attachment_%'] ){
+        attach_ids = attach_ids+'#;#'+a.Id ;
+        }   
+      attachment atch = new attachment();
+
+        atch.ParentId =  case_id;
+        atch.Name = caseMial.Id+'_'+'_Email.pdf';
+        atch.Body = blob.toPDF(caseMial.FromName+'<br/>'+caseMial.FromAddress+'<br/>'+caseMial.CcAddress +'<br/>' +caseMial.CcAddress+'<br/>'+caseMial.Subject+'<br/>' +caseMial.TextBody +'<br/>'  );
+          atmList.add(atch);  
                 
-            attachment atchtxt = new attachment();
-            atchtxt.ParentId = case_id;
-            atchtxt.Name = caseMial.Id+'_'+'_recover.txt';
-            atchtxt.Body =  blob.valueOf('#%#BccAddress='+caseMial.BccAddress+'#%#CcAddress='+caseMial.CcAddress+
-                                                           '#%#FromAddress='+caseMial.FromAddress+'#%#FromName='+caseMial.FromName+
-                                                            '#%#Headers='+caseMial.Headers+'#%#Incoming='+caseMial.Incoming+'#%#MessageDate='+
-                                                            caseMial.MessageDate+'#%#TextBody='+caseMial.TextBody +'#%#ParentId='+case_id+'#%#Status='+caseMial.Status+'#%#ToAddress='+
-                                                            caseMial.ToAddress+'#%#Subject='+caseMial.Subject+'#%#Attachment='+attach_ids);
-           
-            
-    
+      attachment atchtxt = new attachment();
+
+        atchtxt.ParentId = case_id;
+        atchtxt.Name = caseMial.Id+'_'+'_recover.txt';
+        atchtxt.Body =  blob.valueOf('#%#BccAddress='+caseMial.BccAddress+
+                                     '#%#CcAddress='+caseMial.CcAddress+
+                                     '#%#FromAddress='+caseMial.FromAddress+
+                                     '#%#FromName='+caseMial.FromName+
+                                     '#%#Headers='+caseMial.Headers+
+                                     '#%#Incoming='+caseMial.Incoming+
+                                     '#%#MessageDate='+caseMial.MessageDate+
+                                     '#%#TextBody='+caseMial.TextBody +
+                                     '#%#ParentId='+case_id+
+                                      '#%#Status='+caseMial.Status+
+                                      '#%#ToAddress='+caseMial.ToAddress+
+                                      '#%#Subject='+caseMial.Subject+
+                                      '#%#Attachment='+attach_ids);
             atmList.add(atchtxt);
                 
-             EmailMessage casemail_del = new EmailMessage();
-               casemail_del.Id= caseMial.id;
-               mail_del.add(casemail_del);
+        EmailMessage casemail_del = new EmailMessage();
+          casemail_del.Id= caseMial.id;
+            mail_del.add(casemail_del);
                 
             
-}
-  insert atmList;      
-    delete mail_del;  
-    PageReference pg = new PageReference ('/'+case_id) ;
-     return pg ;    
-      
-    } 
-    public PageReference exitpg(){
-     PageReference pg = new PageReference ('/'+case_id) ;
+      }
 
+    insert atmList;      
+    delete mail_del;  
+    database.emptyRecycleBin(mail_del);
+
+    PageReference pg = new PageReference ('/'+case_id) ;
+      return pg ;    
+      } 
+
+  public PageReference exitpg(){
+     PageReference pg = new PageReference ('/'+case_id) ;
      return pg ;
     }
     
