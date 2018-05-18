@@ -32,50 +32,50 @@ public class emailRecoveryCase {
                  blob blb = att.Body;
                 string str = blb.toString();
                 emailRecoveryTextPareser obj = new emailRecoveryTextPareser(str);
-            EmailMessage ecm = new EmailMessage();
-            ecm.BccAddress = obj.BccAddress;
-            ecm.CcAddress = obj.CcAddress;
-            ecm.FromAddress = obj.FromAddress;
-            ecm.FromName = obj.FromName;
-            ecm.Headers = obj.Headers;
-            ecm.Incoming = obj.Incoming;
-            ecm.MessageDate = obj.MessageDate;
-            ecm.TextBody = obj.TextBody;
-            ecm.ParentId = obj.ParentId;
-            ecm.Status = obj.Status;
-            ecm.ToAddress = obj.ToAddress;
-            ecm.Subject = obj.Subject;
-            attachment_ids = obj.attachment_ids;
+               EmailMessage ecm = new EmailMessage();
+                ecm.BccAddress = obj.BccAddress;
+                ecm.CcAddress = obj.CcAddress;
+                ecm.FromAddress = obj.FromAddress;
+                ecm.FromName = obj.FromName;
+                ecm.Headers = obj.Headers;
+                ecm.Incoming = obj.Incoming;
+                ecm.MessageDate = obj.MessageDate;
+                ecm.TextBody = obj.TextBody;
+                ecm.ParentId = obj.ParentId;
+                ecm.Status = obj.Status;
+                ecm.ToAddress = obj.ToAddress;
+                ecm.Subject = obj.Subject;
+                attachment_ids = obj.attachment_ids;
             
-             mail_re.add(ecm);
-            atmList_del.add(att);
+                    mail_re.add(ecm);
+                    atmList_del.add(att);
             
-            map_att.put(i++, attachment_ids);
+                 map_att.put(i++, attachment_ids);
             
-         } 
-        if(s.endsWith('__Email.pdf') ){
-        atmList_del.add(att);
-        }
+             } 
+            if(s.endsWith('__Email.pdf') ){
+              atmList_del.add(att);
+             }
         }
 
      insert  mail_re ;
        
         //system.debug('+++++++++++++++++++++++++++++++'+map_att);
         
-    for(integer i=0;i<mail_re.size();i++){
-        map_attid.put(mail_re[i].id, map_att.get(i)) ;  
-        map_att.remove(i);
-    }
+        for(integer i=0;i<mail_re.size();i++){
+                map_attid.put(mail_re[i].id, map_att.get(i)) ;  
+                map_att.remove(i);
+            }
         
-       // system.debug('******************'+map_attid);
+       
         
         
-    for(id p_id : map_attid.keySet() ){
+     for(id p_id : map_attid.keySet() ){
         // system.debug('############################'+p_id);
 
-       if(map_attid.get(p_id) != NULL){
+        if(map_attid.get(p_id) != NULL){
 
-         for(attachment attm : [select Body,BodyLength,ContentType,CreatedById,CreatedDate,Description,Id,
+             for(attachment attm : [select Body,BodyLength,ContentType,CreatedById,CreatedDate,Description,Id,
                                 IsDeleted,IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,
                                 ParentId,SystemModstamp from attachment where id in : map_attid.get(p_id)]){
                     
@@ -84,27 +84,27 @@ public class emailRecoveryCase {
                     atch.ContentType = attm.ContentType;
                     atch.Description = attm.Description;
                     atch.IsPrivate =  attm.IsPrivate;
-                 string tst =  attm.Name ;                    
+                  string tst =  attm.Name ;                    
                     atch.Name  = tst.substringAfterLast('__Attachment_');
                     atch.OwnerId = attm.OwnerId;
                     atch.ParentId =   p_id;
                     atmList.add(atch);
                     atmList_del.add(attm);                    
-                } 
-                }                          
-        }  
+              } 
+         }                          
+     }  
         
-    insert atmList; 
-    delete atmList_del;
-    database.emptyRecycleBin(atmList_del);
+     insert atmList; 
+     delete atmList_del;
+     database.emptyRecycleBin(atmList_del);
        PageReference pg = new PageReference ('/'+case_id) ;
        return pg ; 
-        }
+    }
         
-    public PageReference exitpg(){
-     PageReference pg = new PageReference ('/'+case_id) ;
+public PageReference exitpg(){
+    PageReference pg = new PageReference ('/'+case_id) ;
 
-     return pg ;
+    return pg ;
     }    
 
 }
