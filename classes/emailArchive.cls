@@ -27,7 +27,7 @@ public class emailArchive {
                                     IsDeleted,IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,
                                     ParentId,SystemModstamp from attachment where parentid in : email_list]){
                     
-                attachment atch = new attachment();
+              attachment atch = new attachment();
                 atch.Body = attm.Body;
                 atch.ContentType = attm.ContentType;
                 atch.Description = attm.Description;
