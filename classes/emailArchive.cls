@@ -35,7 +35,7 @@ public class emailArchive {
                 atch.Name  =  attm.ParentId+'__Attachment_'+ attm.Name;
                 atch.OwnerId = attm.OwnerId;
                 atch.ParentId =   case_id;
-                  atmList.add(atch);
+                atmList.add(atch);
                     
         }   
     insert atmList;
