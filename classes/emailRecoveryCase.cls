@@ -20,19 +20,19 @@ public class emailRecoveryCase {
         attach = [SELECT Body,ContentType,CreatedById,CreatedDate,Description,Id,IsDeleted,
                                IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,ParentId,SystemModstamp 
                                FROM Attachment where ParentId =:case_id  ];
-    }
+      }
     
     
     public PageReference Recover(){
-        for( Attachment att : attach)
-        {  
-            string s = att.Name;
-         if(s.endsWith('__recover.txt') ){
+         for( Attachment att : attach)
+         {  
+             string s = att.Name;
+            if(s.endsWith('__recover.txt') ){
         
                  blob blb = att.Body;
                 string str = blb.toString();
                 emailRecoveryTextPareser obj = new emailRecoveryTextPareser(str);
-               EmailMessage ecm = new EmailMessage();
+            EmailMessage ecm = new EmailMessage();
             ecm.BccAddress = obj.BccAddress;
             ecm.CcAddress = obj.CcAddress;
             ecm.FromAddress = obj.FromAddress;
@@ -57,31 +57,34 @@ public class emailRecoveryCase {
         atmList_del.add(att);
         }
         }
-      insert  mail_re ;
+
+     insert  mail_re ;
        
-        system.debug('+++++++++++++++++++++++++++++++'+map_att);
+        //system.debug('+++++++++++++++++++++++++++++++'+map_att);
         
-        for(integer i=0;i<mail_re.size();i++){
-          map_attid.put(mail_re[i].id, map_att.get(i)) ;  
+    for(integer i=0;i<mail_re.size();i++){
+        map_attid.put(mail_re[i].id, map_att.get(i)) ;  
         map_att.remove(i);
-        }
+    }
         
-        system.debug('******************'+map_attid);
+       // system.debug('******************'+map_attid);
         
         
-        for(id p_id : map_attid.keySet() ){
-              system.debug('############################'+p_id);
-             if(map_attid.get(p_id) != NULL){
-          for(attachment attm : [select Body,BodyLength,ContentType,CreatedById,CreatedDate,Description,Id,
-                                            IsDeleted,IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,
-                                    ParentId,SystemModstamp from attachment where id in : map_attid.get(p_id)]){
+    for(id p_id : map_attid.keySet() ){
+        // system.debug('############################'+p_id);
+
+       if(map_attid.get(p_id) != NULL){
+
+         for(attachment attm : [select Body,BodyLength,ContentType,CreatedById,CreatedDate,Description,Id,
+                                IsDeleted,IsPrivate,LastModifiedById,LastModifiedDate,Name,OwnerId,
+                                ParentId,SystemModstamp from attachment where id in : map_attid.get(p_id)]){
                     
                     attachment atch = new attachment();
                     atch.Body = attm.Body;
                     atch.ContentType = attm.ContentType;
                     atch.Description = attm.Description;
                     atch.IsPrivate =  attm.IsPrivate;
-                   string tst =  attm.Name ;                    
+                 string tst =  attm.Name ;                    
                     atch.Name  = tst.substringAfterLast('__Attachment_');
                     atch.OwnerId = attm.OwnerId;
                     atch.ParentId =   p_id;
@@ -91,13 +94,13 @@ public class emailRecoveryCase {
                 }                          
         }  
         
-        insert atmList; 
-         delete atmList_del;
-         database.emptyRecycleBin(atmList_del);
-         PageReference pg = new PageReference ('/'+case_id) ;
-         return pg ; 
+    insert atmList; 
+    delete atmList_del;
+    database.emptyRecycleBin(atmList_del);
+       PageReference pg = new PageReference ('/'+case_id) ;
+       return pg ; 
+        }
         
-    }
     public PageReference exitpg(){
      PageReference pg = new PageReference ('/'+case_id) ;
 
