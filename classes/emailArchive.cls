@@ -69,10 +69,10 @@ public class emailArchive {
                                      '#%#MessageDate='+caseMial.MessageDate+
                                      '#%#TextBody='+caseMial.TextBody +
                                      '#%#ParentId='+case_id+
-                                      '#%#Status='+caseMial.Status+
-                                      '#%#ToAddress='+caseMial.ToAddress+
-                                      '#%#Subject='+caseMial.Subject+
-                                      '#%#Attachment='+attach_ids);
+                                     '#%#Status='+caseMial.Status+
+                                     '#%#ToAddress='+caseMial.ToAddress+
+                                     '#%#Subject='+caseMial.Subject+
+                                     '#%#Attachment='+attach_ids);
             atmList.add(atchtxt);
                 
         EmailMessage casemail_del = new EmailMessage();
