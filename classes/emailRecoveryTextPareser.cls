@@ -7,7 +7,7 @@ public class emailRecoveryTextPareser {
     
     public emailRecoveryTextPareser(string mail_text){
       list<string>str =   mail_text.split('#%#'); 
-        BccAddress= str[1];
+        BccAddress= str[1]; 
         BccAddress=BccAddress.remove('BccAddress=');
         BccAddress= (BccAddress=='null'? '' : BccAddress);
        
