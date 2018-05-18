@@ -5,8 +5,9 @@ public class emailRecoveryTextPareser {
     public list<id> attachment_ids;
     public id ParentId;
     
-    public emailRecoveryTextPareser(string mail_text){
+  public emailRecoveryTextPareser(string mail_text){
       list<string>str =   mail_text.split('#%#'); 
+      
         BccAddress= str[1]; 
         BccAddress=BccAddress.remove('BccAddress=');
         BccAddress= (BccAddress=='null'? '' : BccAddress);
