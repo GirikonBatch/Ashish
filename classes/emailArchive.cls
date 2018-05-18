@@ -2,24 +2,26 @@ public class emailArchive {
     
     list<attachment> atmList = new list<attachment>();
     list<EmailMessage> mail_del = new list<EmailMessage>();
-     id case_id;
-    string attach_ids='';
+    list<EmailMessage> mail_case ;
     list<id>email_list = new list<id>();
-    
-   // public integer  con;
-    public emailArchive(ApexPages.StandardController controller){
-       case_id = ApexPages.currentPage().getParameters().get('id');
-        
+  
+     id case_id;
+     string attach_ids='';
+
+ public emailArchive(ApexPages.StandardController controller){
+     case_id = ApexPages.currentPage().getParameters().get('id');
+     mail_case  =  [SELECT BccAddress,CcAddress,FromAddress,FromName, HasAttachment,HtmlBody,
+                          Id,Incoming,MessageDate,ParentId,RelatedToId,Status,Headers,
+                          Subject,TextBody,ToAddress FROM EmailMessage where ParentId =:case_id ];
  
         }
-    
+         
     
     public PageReference  Archive(){
       
-       // EmailMessage emails = [SELECT BccAddress,CcAddress,FromAddress,FromName,HasAttachment,Headers,HtmlBody,
-                             //  Id,Incoming,MessageDate,ParentId,RelatedToId,Status,Subject,TextBody,ToAddress FROM EmailMessage where ParentId = '5007F00000JJi5j'];
+       
         
-        for( EmailMessage caseMial : [SELECT Id,Subject FROM EmailMessage where ParentId =:case_id ]){
+        for( EmailMessage caseMial : mail_case){
         email_list.add(caseMial.Id);
         }
         
@@ -41,15 +43,10 @@ public class emailArchive {
        insert atmList;
         
           
-      //  system.debug('&&&&&&&&&&&&&'+atmList);
-      //  for(attachment a :atmList ){
-       //    attach_ids = attach_ids+'#;#'+a.Id ;
-      //      }
+   
       atmList.clear();
        
-        for( EmailMessage caseMial : [SELECT BccAddress,CcAddress,FromAddress,FromName,
-                                      HasAttachment,Headers,HtmlBody,Id,Incoming,MessageDate,ParentId,
-                                      RelatedToId,Status,Subject,TextBody,ToAddress FROM EmailMessage where ParentId =:case_id ])
+        for( EmailMessage caseMial : mail_case )
             {
              attach_ids = '';   
              for(attachment a :[select id,name from attachment where name like : caseMial.Id+'__Attachment_%'] ){
