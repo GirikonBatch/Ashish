@@ -8,7 +8,7 @@ public class emailArchive {
      id case_id;
      string attach_ids='';
 
- public emailArchive(ApexPages.StandardController controller){
+  public emailArchive(ApexPages.StandardController controller){
      case_id = ApexPages.currentPage().getParameters().get('id');
      mail_case  =  [SELECT BccAddress,CcAddress,FromAddress,FromName, HasAttachment,HtmlBody,
                           Id,Incoming,MessageDate,ParentId,RelatedToId,Status,Headers,
