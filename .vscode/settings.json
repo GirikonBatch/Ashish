@@ -1,0 +1,7 @@
+{
+    "vsforce.options.pushOnSave": false,
+    "vsforce.organization.loginUrl": "https://login.salesforce.com",
+    "vsforce.organization.password": "Ashish@123",
+    "vsforce.organization.securityToken": "N9g8TYFWWiP29IOpzQzvwAWeu",
+    "vsforce.organization.username": "ashish.anand@girikon.com"
+}
