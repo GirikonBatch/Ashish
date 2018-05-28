@@ -83,10 +83,10 @@ public class bulkCaseArchive {
           /*  Query to get mails from cases to archive  */ 
         
         map_mail = new map<id, EmailMessage>([SELECT BccAddress,CcAddress,CreatedById,CreatedDate,Email_number__c,FromAddress,FromName,
-                                              HasAttachment,Headers,HtmlBody,Id,Incoming,IsDeleted,
-                                              ,MessageDate,ParentId,RelatedToId,
-                                              ,Status,Subject,TextBody,ThreadIdentifier,ToAddress,
-                                              ValidatedFromAddress FROM EmailMessage where ParentId in : map_case_arc.keySet() ]) ;
+                                              HasAttachment,Headers,HtmlBody,Id,Incoming,IsDeleted
+                                              ,MessageDate,ParentId,
+                                              Status,Subject,TextBody,ThreadIdentifier,ToAddress
+                                               FROM EmailMessage where ParentId in : map_case_arc.keySet() ]) ;
         
         /*  Query to get attachments realted to mails  from cases to archive  */ 
         
