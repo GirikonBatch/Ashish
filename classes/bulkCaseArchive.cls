@@ -95,10 +95,7 @@ public class bulkCaseArchive {
                                               FROM Attachment where ParentId in : map_mail.keySet()]);
         
         
-              //   system.debug('************************************'+map_case_arc);
-              //   system.debug('#####################################'+map_mail);
-              //   system.debug('++++++++++++++++++++++++++++++++++++'+map_attm);
-           
+        
         /*  moving attchments from mails-attachments to related cases-attachment   */
         
                 for(attachment att : map_attm.values()){
