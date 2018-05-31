@@ -1,0 +1,98 @@
+<apex:page controller="bulkCaseArchive" sidebar="false">
+    <apex:form >
+      <apex:pageMessages ></apex:pageMessages> 
+        <apex:pageBlock title="Emials Archive Or UnArchive ">
+        
+            <apex:pageBlockSection >
+            
+               <apex:selectList size="1" label="CASE Status" value="{!case_status}" >
+                  
+                   <apex:selectOption itemValue="z" itemLabel="-None-"/>
+                   <apex:selectOption itemValue="New" />
+                   <apex:selectOption itemValue="Working"/>
+                   <apex:selectOption itemValue="Escalated"/>
+                   <apex:selectOption itemValue="Closed"/>
+               </apex:selectList>
+               
+               <apex:selectList size="1" label="CASE Origin" value="{!case_Origin}" >
+                   <apex:selectOption itemValue="z" itemLabel="-None-"/>
+                   <apex:selectOption itemValue="Phone" />
+                   <apex:selectOption itemValue="Email"/>
+                   <apex:selectOption itemValue="Web"/>
+               </apex:selectList>
+               
+               <apex:selectList size="1" label="CASE Cretaed Older Then" value="{!case_created_older}">
+                   
+                   <apex:selectOption itemValue="All" />
+                   <apex:selectOption itemValue="15" itemLabel="15 Days"/>
+                   <apex:selectOption itemValue="30" itemLabel="30 Days"/>
+                   <apex:selectOption itemValue="45" itemLabel="45 Days"/>
+                   <apex:selectOption itemValue="60" itemLabel="60 Days"/>
+               </apex:selectList>
+               
+               <apex:selectList size="1" label="CASE Priority" value="{!case_priority}">
+                   <apex:selectOption itemValue="z" itemLabel="-None-"/>
+                   <apex:selectOption itemValue="High" />
+                   <apex:selectOption itemValue="Medium"/>
+                   <apex:selectOption itemValue="Low"/>
+               </apex:selectList>
+               
+                <apex:selectList size="1" label="CASE Closed Older Then" value="{!case_closed_older}" >
+                   
+                   <apex:selectOption itemValue="All" />
+                   <apex:selectOption itemValue="15" itemLabel="15 Days"/>
+                   <apex:selectOption itemValue="30" itemLabel="30 Days"/>
+                   <apex:selectOption itemValue="45" itemLabel="45 Days"/>
+                   <apex:selectOption itemValue="60" itemLabel="60 Days"/>
+                </apex:selectList>
+                
+                <apex:selectList size="1" label="Record Size" value="{!lmt}"  >
+                   <apex:selectOption itemValue="1" itemLabel="01" />
+                   <apex:selectOption itemValue="5" itemLabel="05" />
+                   <apex:selectOption itemValue="10" />
+                   <apex:selectOption itemValue="15"/>
+                   
+                </apex:selectList>
+                <html> <input type="datetime-local" id="myLocalDate" min="2018-05-06T12:22:55"/></html>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="4">
+                
+                <apex:commandButton value="Show To Archive" action="{!ToArchive}" rendered="true"/>
+                
+                
+                <apex:commandButton value="Show To UnArchive" action="{!ToUnArchive}" rendered="true"/>
+                
+                
+                <apex:commandButton value="Shedule Archive" action="{!BatchToArchive}"/>
+                <apex:commandButton value="Shedule UnArchive" action="{!BatchToUnArchive}"/>
+                
+            </apex:pageBlockSection>
+        
+        </apex:pageBlock>
+        
+        
+        <apex:pageBlock id="pb" rendered="{!rendr}" >
+ 
+
+                    <apex:pageBlockTable value="{!case_arc}" var="case_lst">
+                        <apex:column value="{!case_lst.CaseNumber}"/>
+                        <apex:column value="{!case_lst.Subject}"/>
+                        <apex:column value="{!case_lst.Status}"/>
+                        <apex:column value="{!case_lst.CreatedDate}"/>
+                        <apex:column value="{!case_lst.Priority}"/>
+                        
+                    </apex:pageBlockTable>
+                    
+              
+            <apex:commandButton status="loadingActionStatus"  value="Confirm Archive" action="{!archiveCase}" disabled="{!CofmArch}"  />
+             <apex:commandButton value="Confirm UnArchive" action="{!unArchiveCase}" disabled="{!ConfmUnArc}" />
+
+
+
+      
+            
+        </apex:pageBlock>
+    
+    </apex:form>
+
+</apex:page>
