@@ -391,9 +391,9 @@ public class bulkCaseArchive {
                 
                 String nextFireTime =ss+' '+min+' '+hour+' '+day+' '+month+' ? '+year;
                 
-                String nextFireTime1 = '0 25 * * * ? 2018';
+                //String nextFireTime1 = '0 25 * * * ? 2018';
 
-                String cr=System.schedule('ArchiveBatch '+datetime.now(), nextFireTime1,bArc);
+                String cr=System.schedule('ArchiveBatch '+datetime.now(), nextFireTime,bArc);
                 
                 
                 ApexPages.AddMessage(new ApexPages.Message(ApexPages.Severity.CONFIRM,'Batch has been Scheduled Successfully.Thank you!'));
