@@ -5,6 +5,7 @@ public class bulkCaseArchive {
     public  boolean ConfmUnArc{get;set;}
     public  time    tt{get;set;}
     public  date    dd{get;set;}
+    public  date    Edd{get;set;}
     public  string case_status{get;set;}     //status value input
     public  string case_Origin{get;set;}     //origin value input
     public  string case_priority{get;set;}
@@ -51,6 +52,7 @@ public class bulkCaseArchive {
         ConfmUnArc=true;
         CofmArch=true; 
         dd=Date.today()+1;
+        Edd=Date.today()+2;
         tt=Time.newInstance(00, 00,00, 59);
     }
     
@@ -373,11 +375,14 @@ public class bulkCaseArchive {
         ConfmUnArc=false;
         CofmArch=false;
  
-        if(tt == Null || dd == Null){
+        if(tt == Null || dd == Null || Edd == Null){
             ApexPages.AddMessage(new ApexPages.Message(ApexPages.Severity.Error,'Scheduled Date And Time can not Be blank!'));   
         }
+        else if(dd>=Edd){
+             ApexPages.AddMessage(new ApexPages.Message(ApexPages.Severity.Error,' End Date Must Be greater then Start Date !'));
+        }
         else
-        {
+        { 
            // try
            // {
                 Transient String hour = String.valueOf(tt.hour());
@@ -386,12 +391,15 @@ public class bulkCaseArchive {
                 Transient String day = String.valueOf(dd.day());
                 Transient String month = String.valueOf(dd.month());
                 Transient String year = String.valueOf(dd.year());
+                Transient String Eday = String.valueOf(Edd.day());
+                Transient String Emonth = String.valueOf(Edd.month());
+                Transient String Eyear = String.valueOf(Edd.year());
                 
                 sheduleBatchArchive bArc = New sheduleBatchArchive(q,1);
                 
-                String nextFireTime =ss+' '+min+' '+hour+' '+day+' '+month+' ? '+year;
+                String nextFireTime =ss+' '+min+' '+hour+' '+day+'-'+Eday+' '+month+'-'+Emonth+' ? '+year+'-'+Eyear;
                 
-                //String nextFireTime1 = '0 25 * * * ? 2018';
+               System.debug('ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'+nextFireTime );
 
                 String cr=System.schedule('ArchiveBatch '+datetime.now(), nextFireTime,bArc);
                 
@@ -414,7 +422,7 @@ public class bulkCaseArchive {
     
     
     public void BatchToUnArchive(){
-		/*        
+        /*        
          dynamic Query to get cases to Unarchive  
         Transient  string case_status_v =(case_status=='z'? '' :(case_status=='closed'? ' AND IsClosed  = true' : ' AND status =  \''+String.escapeSingleQuotes(case_status)+'\''));Transient  string case_Origin_v =(case_Origin=='z'? '' : ' AND status =  \''+String.escapeSingleQuotes(case_Origin)+'\'');
         Transient  string case_priority_v =(case_priority=='z'? '' : ' AND Priority =  \''+String.escapeSingleQuotes(case_priority)+'\'');

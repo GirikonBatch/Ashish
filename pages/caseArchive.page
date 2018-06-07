@@ -1,7 +1,7 @@
-<apex:page controller="bulkCaseArchive" sidebar="false">
+<apex:page controller="bulkCaseArchive" sidebar="false" docType="html-5.0" >
     <apex:form >
       <apex:pageMessages ></apex:pageMessages> 
-        <apex:pageBlock title="Emials Archive Or UnArchive ">
+        <apex:pageBlock title="Emials Archive Or UnArchive " >
         
             <apex:pageBlockSection >
             
@@ -53,22 +53,49 @@
                    <apex:selectOption itemValue="15"/>
                    
                 </apex:selectList>
-                <html> <input type="datetime-local" id="myLocalDate" min="2018-05-06T12:22:55"/></html>
+                
+                  <apex:input label="Preferres Start Date" type="date" value="{!dd}"   />
+                  <apex:input label="Preferres Time" type="time" value="{!tt}" />
+                  <apex:input label="Preferres End Date" type="date" value="{!Edd}"   />
+                  
+               
+
                 </apex:pageBlockSection>
-                <apex:pageBlockSection columns="4">
+                <apex:pageBlockButtons location="bottom" style="align: center;">
                 
-                <apex:commandButton value="Show To Archive" action="{!ToArchive}" rendered="true"/>
-                
-                
-                <apex:commandButton value="Show To UnArchive" action="{!ToUnArchive}" rendered="true"/>
+                <apex:commandButton value="Show To Archive Cases" action="{!ToArchive}" rendered="true"/>
                 
                 
-                <apex:commandButton value="Shedule Archive" action="{!BatchToArchive}"/>
-                <apex:commandButton value="Shedule UnArchive" action="{!BatchToUnArchive}"/>
+                <apex:commandButton value="Show To UnArchive Cases" action="{!ToUnArchive}" rendered="true"/>
                 
-            </apex:pageBlockSection>
+                  
+                
+            </apex:pageBlockButtons>
         
         </apex:pageBlock>
+        <apex:outputPanel id="fst">
+            
+                 <apex:actionStatus id="ta">
+            <apex:facet name="start" >
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.75; z-index: 1000; background-color: black;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif" />
+            </div>
+            </apex:facet>
+           
+           
+            
+        </apex:actionStatus>
+
+          <script>
+               function myFunction() {
+              location.reload(true);
+                }
+            </script>
+        
+        </apex:outputPanel>
         
         
         <apex:pageBlock id="pb" rendered="{!rendr}" >
@@ -83,11 +110,14 @@
                         
                     </apex:pageBlockTable>
                     
-              
-            <apex:commandButton status="loadingActionStatus"  value="Confirm Archive" action="{!archiveCase}" disabled="{!CofmArch}"  />
+             <apex:pageBlockButtons location="bottom"> 
+            <apex:commandButton value="Confirm Archive" action="{!archiveCase}" disabled="{!CofmArch}"  status="ta"   />
+           
+            <apex:commandButton value="Shedule Archive" action="{!BatchToArchive}" disabled="{!CofmArch}"  />
+            <apex:commandButton value="Shedule UnArchive" action="{!BatchToUnArchive}" disabled="{!ConfmUnArc}" />
              <apex:commandButton value="Confirm UnArchive" action="{!unArchiveCase}" disabled="{!ConfmUnArc}" />
-
-
+              
+            </apex:pageBlockButtons>
 
       
             
