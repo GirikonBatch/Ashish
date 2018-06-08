@@ -46,7 +46,7 @@
                    <apex:selectOption itemValue="60" itemLabel="60 Days"/>
                 </apex:selectList>
                 
-                <apex:selectList size="1" label="Record Size" value="{!lmt}"  >
+                <apex:selectList id="Record_List" size="1" label="Record Size" value="{!lmt}" rendered="{!schedule_disable}" >
                    <apex:selectOption itemValue="1" itemLabel="01" />
                    <apex:selectOption itemValue="5" itemLabel="05" />
                    <apex:selectOption itemValue="10" />
@@ -54,23 +54,38 @@
                    
                 </apex:selectList>
                 
-                  <apex:input label="Preferres Start Date" type="date" value="{!dd}"   />
-                  <apex:input label="Preferres Time" type="time" value="{!tt}" />
-                  <apex:input label="Preferres End Date" type="date" value="{!Edd}"   />
+                
+                 <apex:selectList id="schedule_Record_list" size="1" label="Record Size" value="{!lmt}" rendered="{!schedule_show}" >
+                   <apex:selectOption itemValue="1" />
+                    <apex:selectOption itemValue="20"  />
+                   <apex:selectOption itemValue="30"  />
+                   <apex:selectOption itemValue="40" />
+                   <apex:selectOption itemValue="50"/>
+                   
+                </apex:selectList>
+                
+                  <apex:input label="schedule Start Date" type="date" value="{!dd}"  rendered="{!schedule_show}" />
+                  <apex:input label="schedule Time" type="time" value="{!tt}"   rendered="{!schedule_show}" />
+                  <apex:input label="schedule End Date" type="date" value="{!Edd}"  rendered="{!schedule_show}" />
                   
                
 
                 </apex:pageBlockSection>
-                <apex:pageBlockButtons location="bottom" style="align: center;">
-                
-                <apex:commandButton value="Show To Archive Cases" action="{!ToArchive}" rendered="true"/>
+                <div align="Center">
                 
                 
-                <apex:commandButton value="Show To UnArchive Cases" action="{!ToUnArchive}" rendered="true"/>
                 
-                  
+                <apex:commandButton value="Show To Archive Cases" action="{!ToArchive}" disabled="{!cmd_bttn}"/>&nbsp;
                 
-            </apex:pageBlockButtons>
+                
+                <apex:commandButton value="Show To UnArchive Cases" action="{!ToUnArchive}" disabled="{!cmd_bttn}"/>&nbsp;
+                
+                <apex:commandButton value="schedule "  disabled="{!cmd_bttn}" action="{!schedule}" rendered="{!schedule_disable}" />
+                
+                 
+                
+            
+             </div>
         
         </apex:pageBlock>
         <apex:outputPanel id="fst">
@@ -103,22 +118,23 @@
 
                     <apex:pageBlockTable value="{!case_arc}" var="case_lst">
                         <apex:column value="{!case_lst.CaseNumber}"/>
-                        <apex:column value="{!case_lst.Subject}"/>
+                        <apex:column value="{!case_lst.Subject}"/> 
                         <apex:column value="{!case_lst.Status}"/>
                         <apex:column value="{!case_lst.CreatedDate}"/>
                         <apex:column value="{!case_lst.Priority}"/>
                         
                     </apex:pageBlockTable>
-                    
-             <apex:pageBlockButtons location="bottom"> 
-            <apex:commandButton value="Confirm Archive" action="{!archiveCase}" disabled="{!CofmArch}"  status="ta"   />
+  <div align="Center">                   
+             
+            <apex:commandButton value="Confirm Archive" action="{!archiveCase}" rendered="{!CofmArch}"  status="ta"   />
            
-            <apex:commandButton value="Shedule Archive" action="{!BatchToArchive}" disabled="{!CofmArch}"  />
-            <apex:commandButton value="Shedule UnArchive" action="{!BatchToUnArchive}" disabled="{!ConfmUnArc}" />
-             <apex:commandButton value="Confirm UnArchive" action="{!unArchiveCase}" disabled="{!ConfmUnArc}" />
+            <apex:commandButton value="schedule Archive" action="{!BatchToArchive}" rendered="{!Cofm_Shed_Arch}"  />
+            <apex:commandButton value="schedule UnArchive" action="{!BatchToUnArchive}" rendered="{!Confm_Shed_UnArc}" />
+             <apex:commandButton value="Confirm UnArchive" action="{!unArchiveCase}" rendered="{!ConfmUnArc}" />&nbsp;&nbsp;
+              <apex:commandButton value="Cancel" action="{!cancelNow}" rendered="true" />   
               
-            </apex:pageBlockButtons>
-
+           
+</div>
       
             
         </apex:pageBlock>

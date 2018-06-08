@@ -83,11 +83,18 @@ public class bulkCaseArchive {
         
         case_arc=Database.query(qry);
         
+        if(case_arc.size()== 0){
+         
+            ApexPages.AddMessage(new ApexPages.Message(ApexPages.Severity.Error,' No Records Found !'));
+            cancelNow();
+            
+        }else{
+        
         rendr = true;
         ConfmUnArc=false;
         Confm_Shed_UnArc=false;
         cmd_bttn = true;
-        
+        }
         
     }
     
@@ -249,11 +256,19 @@ public class bulkCaseArchive {
             case_Origin_v +case_priority_v +case_created_older_v + case_closed_older_v  + ' limit ' + lmt ;
         
         case_arc=Database.query(qry);
+         if(case_arc.size()== 0){
+         
+            ApexPages.AddMessage(new ApexPages.Message(ApexPages.Severity.Error,' No Records Found !'));
+            cancelNow();
+            
+        }
+        else{
         rendr = true;
         CofmArch = false;
         Cofm_Shed_Arch= false;
         
         cmd_bttn = true;
+        }
     }
     
     
