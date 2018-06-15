@@ -281,7 +281,7 @@ public class bulkCaseArchive {
             case_update.clear();
             map_attid.clear();
             mail_re.clear();
-            
+            i=0;
             atmList_del.clear(); 
             
             map<id,Attachment> attach = new map<id,Attachment>([SELECT Body,ContentType,Description,Id,IsDeleted,
@@ -330,8 +330,7 @@ public class bulkCaseArchive {
             }
             
             insert mail_re ;
-            //        delete atmList_del;
-            //  atmList_del.clear();
+            i=0;
             system.debug('+++++++++++++++++++++++++++++++'+mail_re);
             
             for( i=0;i<mail_re.size();i++){
